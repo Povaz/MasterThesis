@@ -31,6 +31,7 @@ class QLearning:
         self.dr = dr
         self.explr_decay = explr_decay
         self.min_explr_rate = min_explr_rate
+        self.explr_rate = 1.0
 
         action_space_size = env.action_space.n
         state_space_size = env.observation_space.n
@@ -88,7 +89,7 @@ class QLearning:
                 self.env.render()
                 time.sleep(0.3)
 
-            action = np.argmax(self.q_table[state, :])
+            action = self.policy(state)
             new_state, reward, done, info = self.env.step(action)
 
             if done:
@@ -102,3 +103,6 @@ class QLearning:
             state = new_state
 
         self.env.close()
+
+    def policy(self, state):
+        return np.argmax(self.q_table[state, :])
